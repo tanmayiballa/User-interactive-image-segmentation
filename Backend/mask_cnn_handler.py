@@ -28,6 +28,7 @@ class Handler:
         try:
             log.info("Loading model weights")
             weights_pth = os.path.join(app_constants.base_models_path, app_constants.mask_rcnn_file_name)
+            print(weights_pth)
 
             class IConfig(coco.CocoConfig):
                 GPU_COUNT = 1

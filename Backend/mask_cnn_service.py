@@ -22,6 +22,11 @@ async def create_upload_file(file: UploadFile = File(...)):
         obj = Handler()
         uploaded_file = file.file
         file_path = Path(f"uploads/{file.filename}")
+        
+        uploads_dir = Path("uploads")
+        uploads_dir.mkdir(parents=True, exist_ok=True)
+
+        file_path = uploads_dir / file.filename
         with file_path.open("wb") as buffer:
             shutil.copyfileobj(uploaded_file, buffer)
 
