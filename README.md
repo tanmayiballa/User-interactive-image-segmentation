@@ -1,2 +1,0 @@
-# User-Interactive-Image-Classification
- 
