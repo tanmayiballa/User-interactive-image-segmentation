@@ -1,0 +1,26 @@
+{
+    "labels": ["car", "person"],
+    "car":{
+        "ID": [0, 1, 2],
+        "detected_file_path": {
+            "0":"file_name",
+            "1": "file_name"
+        },
+        "masked_file_path": {
+            "0":"file_name",
+            "1": "file_name"
+        } 
+    },
+
+    "person":{
+        "ID": [0, 1, 2],
+        "detected_file_path": {
+            "0":"file_name",
+            "1": "file_name"
+        },
+        "masked_file_path": {
+            "0":"file_name",
+            "1": "file_name"
+        } 
+    }
+}

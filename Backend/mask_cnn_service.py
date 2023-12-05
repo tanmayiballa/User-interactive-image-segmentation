@@ -1,5 +1,10 @@
-from fastapi import APIRouter
+import shutil
+from pathlib import Path
+from fastapi import APIRouter, File, UploadFile, HTTPException
+from fastapi.responses import FileResponse
+
 import app_constants
+from mask_cnn_handler import Handler
 from logging_utility import logger
 
 router = APIRouter()
@@ -10,3 +15,37 @@ def test():
     logger.info("Test service is hit")
     return "Test"
 
+
+@router.post(app_constants.upload_file_endpoint)
+async def create_upload_file(file: UploadFile = File(...)):
+    try:
+        obj = Handler()
+        uploaded_file = file.file
+        file_path = Path(f"uploads/{file.filename}")
+        with file_path.open("wb") as buffer:
+            shutil.copyfileobj(uploaded_file, buffer)
+
+        out_file_ = obj.predict(file_path)
+        output_path = Path(f"output/{out_file_}")
+
+        response = app_constants.result_success_template(
+            data=output_path, message="Uploaded file Successfully")
+        return response
+
+    except HTTPException as err:
+        return app_constants.result_error_template(message=err.detail)
+
+    except Exception as err:
+        raise HTTPException(status_code=500, detail=str(err)) from err
+
+
+@router.get(app_constants.download_file_endpoint)
+async def download_file(file_name: str):
+    try:
+        file_path = Path(f"output/{file_name}")
+        return FileResponse(file_path, media_type="application/octet-stream", filename=file_name)
+    except HTTPException as err:
+        return app_constants.result_error_template(message=err.detail)
+
+    except Exception as err:
+        raise HTTPException(status_code=500, detail=str(err)) from err
