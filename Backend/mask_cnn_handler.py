@@ -11,7 +11,7 @@ from fastapi import HTTPException
 import app_constants
 from logging_utility import logger as log
 import Mask_RCNN_clone.mrcnn.model as modellib
-from Mask_RCNN_clone.mrcnn.coco import coco
+from Mask_RCNN_clone.mrcnn import coco
 from Mask_RCNN_clone.mrcnn import utils
 
 warnings.filterwarnings("ignore")
