@@ -28,7 +28,7 @@ function App() {
 
   const handleUpload = async () => {
     try {
-      console.log("Hi")
+      console.log("Uploaded Image")
       const formData = new FormData();
       formData.append('file', file);
 
@@ -46,16 +46,17 @@ function App() {
 
   const processImage = async () => {
     try {
-      console.log("Hi")
+      console.log("Process Image")
       
     } catch (error) {
       console.error('Error uploading file:', error);
     }
     setCheckListVisible(!isCheckListVisible);
   };
+
   const detectedImages = async () => {
     try {
-      console.log("Hi")
+      console.log("Detected Images")
       
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -68,11 +69,10 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await  axios.post('http://localhost:5008/ecc/get_labels', {
+        const response = await  axios.post('http://localhost:5001/ecc/get_labels', {
           headers: {
             'Content-Type': 'application/json',
-          },
-          // body: JSON.stringify({ "a": 1 }),
+          }
         });
 
         if (!response.ok) {
@@ -80,6 +80,7 @@ function App() {
         }
 
         const data = await response.json();
+        console.log('Data from backend:', data);
         setCheckList(data.data);
       } catch (error) {
         console.error('Error fetching data:', error.message);
@@ -125,9 +126,6 @@ function App() {
   const toggleDialog = () => {
     setDialog(!dialog);
   };
- 
-
-
 
   return (
     <div>
