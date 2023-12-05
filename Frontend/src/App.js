@@ -3,7 +3,7 @@ import axios from 'axios';
 import TitleBar from './titlebar';
 import './style.css'; 
 import Popup from 'reactjs-popup';
-// import 'reactjs-popup/dist/index.css';
+import 'reactjs-popup/dist/index.css';
 
 
 import sample_out_det from "./images/sample_out_det.jpg";
@@ -14,6 +14,7 @@ function App() {
   const [file, setFile] = useState();
   const [result, setResult] = useState(null);
   const [task, setSelectedOption] = useState(null);
+  const [isCheckListVisible, setCheckListVisible] = useState(false);
   
   const handleFileChange = (event) => {
     console.log(event.target.files);
@@ -49,6 +50,7 @@ function App() {
     } catch (error) {
       console.error('Error uploading file:', error);
     }
+    setCheckListVisible(!isCheckListVisible);
   };
   const detectedImages = async () => {
     try {
@@ -126,91 +128,48 @@ function App() {
                     <option value="Option 3">Option 3</option>
                   </select>
                 </div>
-
-                {/* {task && <button onClick={processImage}>Process</button>} 
-                <div>
-                  <Popup trigger=
-                    {<button onClick={processImage}>Process</button>} 
-                    modal nested>
-                    {
-                      close => (
-                          <div className='image-popup'>
-                              <div className='content'>
-                              <img
-                                src='/Users/harikakanakam/Documents/IU/Edu/Fall23/ECC/Project/User-Interactive-Image-Classification/Backend/Mask_RCNN/25691390_f9944f61b5_z.jpg' // Replace with the actual path to your image
-                                // alt='Popup Image'
-                                // style={{ maxWidth: '100%', maxHeight: '100%' }}
-                              />
-                              </div>
-                              <div>
-                                  <button onClick=
-                                      {() => close()}>
-                                          Close
-                                  </button>
-                              </div>
-                          </div>
-                      )
-                    }
-                  </Popup>
-                </div> */}
-                
                 {task && (
                 <div>
                   <button onClick={processImage}>Process</button>
-                  <div className="checkList">
-                    <div className="title">Identified Labels</div>
-                    <div className="list-container">
-                      {checkList.map((item, index) => (
-                        <div key={index}>
-                          <input value={item} type="checkbox" onChange={handleCheck} />
-                          <span className={isChecked(item)}>{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    {`Selected Labels are: ${checkedItems}`}
-                  </div>
-                  {/* <button onClick={detectedImages}>Show Detected Images</button> */}
-                  {/* <button onClick={detectedImages}>Show Detected Images</button> */}
-                  {/* <button className="popup-button" onClick={toggleDialog}>Show Popup Image</button>
-                    {dialog && (
-                      <div className="dialog">
-                        <div className="dialog-content">
-                          <button className="close-icon" onClick={toggleDialog}>&#10005;</button>
-                          <img className="popup-image" src={imageSrc} alt="Detected" />
-                        </div>
-                      </div>
-                    )} */}
-
-                <div>
-                  <Popup trigger=
-                    {<button onClick={detectedImages}>Show Detected Images</button>} 
-                    modal nested>
-                    {
-                      close => (
-                          <div className='image-popup'>
-                              <div className='content'>
-                              <img
-                                src={sample_out_det}
-                                alt='Detected Image'
-                                style={{ maxWidth: '48%', maxHeight: '2%' }}
-                              />
-                              <img
-                                src={sample_out_mask}
-                                alt='Masked Image'
-                                style={{ maxWidth: '48%', maxHeight: '2%' }}
-                              />
-                              </div>
-                              <div>
-                                  <button onClick={() => close()}>Close</button>
-                              </div>
+                  {isCheckListVisible && (
+                    <div>
+                      <h3>Identified Labels</h3>
+                      <div className="list-container">
+                        {checkList.map((item, index) => (
+                          <div key={index}>
+                            <input value={item} type="checkbox" onChange={handleCheck} />
+                            <span className={isChecked(item)}>{item}</span>
                           </div>
-                      )
-                    }
-                  </Popup>
-                </div>
-
+                        ))}
+                      </div>
+                      <div>
+                        {`Selected Labels are: ${checkedItems}`}
+                      </div>
+                      <div>
+                        <Popup trigger=
+                          {<button onClick={detectedImages}>Show Detected Images</button>} 
+                          modal nested>
+                          {
+                            close => (
+                                <div className='image-popup'>
+                                    <div className='content'>
+                                    <img src={sample_out_det} alt='Detected Image' 
+                                    style={{ maxWidth: '48%', maxHeight: '2%' }} />
+                                    <img
+                                      src={sample_out_mask}
+                                      alt='Masked Image'
+                                      style={{ maxWidth: '48%', maxHeight: '2%' }}
+                                    />
+                                    </div>
+                                    <div>
+                                        <button onClick={() => close()}>Close</button>
+                                    </div>
+                                </div>
+                            )
+                          }
+                        </Popup>
+                      </div>
+                    </div>)}
 
                 </div>)}
 
