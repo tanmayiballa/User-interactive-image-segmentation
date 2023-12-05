@@ -1,0 +1,43 @@
+{
+    "dog": [
+        {
+            "ID": 0,
+            "det_img_path": "/Users/tanmayiballa/Documents/GitHub/User-interactive-img-segmentation/Backend/output_images/_dog_det_0.jpg",
+            "mask_img_path": "/Users/tanmayiballa/Documents/GitHub/User-interactive-img-segmentation/Backend/output_images/_dog_mask_0_mask.jpg"
+        },
+        {
+            "ID": 1,
+            "det_img_path": "/Users/tanmayiballa/Documents/GitHub/User-interactive-img-segmentation/Backend/output_images/_dog_det_1.jpg",
+            "mask_img_path": "/Users/tanmayiballa/Documents/GitHub/User-interactive-img-segmentation/Backend/output_images/_dog_mask_1_mask.jpg"
+        },
+        {
+            "ID": 2,
+            "det_img_path": "/Users/tanmayiballa/Documents/GitHub/User-interactive-img-segmentation/Backend/output_images/_dog_det_2.jpg",
+            "mask_img_path": "/Users/tanmayiballa/Documents/GitHub/User-interactive-img-segmentation/Backend/output_images/_dog_mask_2_mask.jpg"
+        },
+        {
+            "ID": 4,
+            "det_img_path": "/Users/tanmayiballa/Documents/GitHub/User-interactive-img-segmentation/Backend/output_images/_dog_det_4.jpg",
+            "mask_img_path": "/Users/tanmayiballa/Documents/GitHub/User-interactive-img-segmentation/Backend/output_images/_dog_mask_4_mask.jpg"
+        }
+    ],
+    "person": [
+        {
+            "ID": 3,
+            "det_img_path": "/Users/tanmayiballa/Documents/GitHub/User-interactive-img-segmentation/Backend/output_images/_person_det_3.jpg",
+            "mask_img_path": "/Users/tanmayiballa/Documents/GitHub/User-interactive-img-segmentation/Backend/output_images/_person_mask_3_mask.jpg"
+        },
+        {
+            "ID": 5,
+            "det_img_path": "/Users/tanmayiballa/Documents/GitHub/User-interactive-img-segmentation/Backend/output_images/_person_det_5.jpg",
+            "mask_img_path": "/Users/tanmayiballa/Documents/GitHub/User-interactive-img-segmentation/Backend/output_images/_person_mask_5_mask.jpg"
+        }
+    ],
+    "bench": [
+        {
+            "ID": 6,
+            "det_img_path": "/Users/tanmayiballa/Documents/GitHub/User-interactive-img-segmentation/Backend/output_images/_bench_det_6.jpg",
+            "mask_img_path": "/Users/tanmayiballa/Documents/GitHub/User-interactive-img-segmentation/Backend/output_images/_bench_mask_6_mask.jpg"
+        }
+    ]
+}
