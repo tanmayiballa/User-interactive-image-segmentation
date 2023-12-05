@@ -53,8 +53,8 @@ def predict(img_pth):
     root = os.getcwd()
     model_segment = load_model_weights(root)
     class_names = get_coco_classes()
-    out_pth_det = root + '/Mask_RCNN_clone/images/sample_out_det.jpg'
-    out_pth_mask = root + '/Mask_RCNN_clone/images/sample_out_mask.jpg'
+    out_pth_det = root + '/output_images/sample_out_det.jpg'
+    out_pth_mask = root + '/output_images/sample_out_mask.jpg'
 
     input_img = skimage.io.imread(img_pth)
 
@@ -91,4 +91,4 @@ def predict(img_pth):
 
 if __name__ == '__main__':
     print("Infer Code:")
-    predict('./Mask_RCNN_clone/images/8699757338_c3941051b6_z.jpg')
+    predict('./Mask_RCNN_clone/images/3627527276_6fe8cd9bfe_z.jpg')
