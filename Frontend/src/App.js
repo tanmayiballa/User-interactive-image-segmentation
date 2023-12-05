@@ -151,18 +151,26 @@ function App() {
                           modal nested>
                           {
                             close => (
-                                <div className='image-popup'>
-                                    <div className='content'>
-                                    <img src={sample_out_det} alt='Detected Image' 
-                                    style={{ maxWidth: '48%', maxHeight: '2%' }} />
+                                <div >
+                                    <div className='image-popup'>
+                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
                                     <img
-                                      src={sample_out_mask}
+                                      src={sample_out_mask} 
+                                      className='images_popup'
                                       alt='Masked Image'
-                                      style={{ maxWidth: '48%', maxHeight: '2%' }}
                                     />
+                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
+                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
+                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
+                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
+                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
+                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
+                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
+                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
                                     </div>
                                     <div>
-                                        <button onClick={() => close()}>Close</button>
+                                        <button className='button_popup'
+                                        onClick={() => close() }>Close</button>
                                     </div>
                                 </div>
                             )
