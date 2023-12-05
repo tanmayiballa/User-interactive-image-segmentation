@@ -35,7 +35,7 @@ function App() {
     <div>
       <h1>Image Processing App</h1>
       <input type="file" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload and Process</button>
+      <button onClick={handleUpload}>Upload and process</button>
       {result && (
         <div>
           <img src={sample_out_det} alt="Cropped Object" />
