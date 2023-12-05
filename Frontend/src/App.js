@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TitleBar from './titlebar';
 import './style.css'; 
@@ -11,6 +11,7 @@ import sample_out_mask from "./images/sample_out_mask.jpg";
 
 
 function App() {
+
   const [file, setFile] = useState();
   const [result, setResult] = useState(null);
   const [task, setSelectedOption] = useState(null);
@@ -62,30 +63,60 @@ function App() {
   };
   
   const [checked, setChecked] = useState([]);
-  const checkList = ["Car", "Person", "Zebra", "Lights"];
+  const [checkList, setCheckList] = useState([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await  axios.post('http://localhost:5008/ecc/get_labels', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          // body: JSON.stringify({ "a": 1 }),
+        });
 
-  // Add/Remove checked item from list
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
+        const data = await response.json();
+        setCheckList(data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
   const handleCheck = (event) => {
-    var updatedList = [...checked];
-    if (event.target.checked) {
-      updatedList = [...checked, event.target.value];
-    } else {
-      updatedList.splice(checked.indexOf(event.target.value), 1);
-    }
+    const updatedList = event.target.checked
+      ? [...checked, event.target.value]
+      : checked.filter((item) => item !== event.target.value);
+
     setChecked(updatedList);
   };
+  const checkedItems = checked.length ? checked.join(', ') : '';
+
+  // // Add/Remove checked item from list
+  // const handleCheck = (event) => {
+  //   var updatedList = [...checked];
+  //   if (event.target.checked) {
+  //     updatedList = [...checked, event.target.value];
+  //   } else {
+  //     updatedList.splice(checked.indexOf(event.target.value), 1);
+  //   }
+  //   setChecked(updatedList);
+  // };
 
   // Generate string of checked items
-  const checkedItems = checked.length
-    ? checked.reduce((total, item) => {
-        return total + ", " + item;
-      })
-    : "";
+  // const checkedItems = checked.length
+  //   ? checked.reduce((total, item) => {
+  //       return total + ", " + item;
+  //     })
+  //   : "";
 
   // Return classes based on whether item is checked
-  var isChecked = (item) =>
-    checked.includes(item) ? "checked-item" : "not-checked-item";
+  const isChecked = (item) => (checked.includes(item) ? 'checked-item' : 'not-checked-item');
 
   const [dialog, setDialog] = useState(false);
   const [imageSrc, setImageSrc] = useState(
