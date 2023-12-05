@@ -26,7 +26,10 @@ def load_model_weights(root):
     config = IConfig()
 
     model_segment = modellib.MaskRCNN(mode="inference", model_dir='mask_rcnn_coco.hy', config=config)
-    model_segment.load_weights(weights_pth, by_name=True)
+    try:
+        model_segment.load_weights(weights_pth, by_name=True)
+    except:
+        utils.download_trained_weights(weights_pth)
     return model_segment
 
 def get_coco_classes():
