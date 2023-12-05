@@ -7,7 +7,6 @@ import skimage.io
 import matplotlib
 import matplotlib.pyplot as plt
 import cv2
-import os
 from PIL import Image
 import warnings
 warnings.filterwarnings("ignore")
