@@ -7,6 +7,7 @@ import skimage.io
 import matplotlib
 import matplotlib.pyplot as plt
 import cv2
+import json
 from PIL import Image
 import warnings
 warnings.filterwarnings("ignore")
@@ -53,8 +54,8 @@ def predict(img_pth):
     root = os.getcwd()
     model_segment = load_model_weights(root)
     class_names = get_coco_classes()
-    out_pth_det = root + '/output_images/sample_out_det.jpg'
-    out_pth_mask = root + '/output_images/sample_out_mask.jpg'
+    out_pth_det = root + '/output_images/'
+    out_pth_mask = root + '/output_images/'
 
     input_img = skimage.io.imread(img_pth)
 
@@ -65,30 +66,53 @@ def predict(img_pth):
     predicted_objects = []
     masks_objects = []
     detected_masks = np.swapaxes(param['masks'], 2, 0)
+    #print(param[0]['masks'], param[:]['masks'].shape)
+    
     cls_ids = param['class_ids']
+    object_labels = {}
     for i in range(0, len(cls_ids)):
-        predicted_objects.append(class_names[cls_ids[i]])
+        cls_id = cls_ids[i]
+        cls_name = class_names[cls_id]
+        if cls_name not in object_labels.keys():
+            object_labels[cls_name] = [i]
+        else:
+            object_labels[cls_name].append(i)
+        predicted_objects.append(cls_name)
         masks_objects.append(detected_masks[i, :, :])
 
-    #res_img = visualize.display_instances(input_img, param['rois'], param['masks'], param['class_ids'], class_names, param['scores'])
-    #res_img = Image.fromarray(res_img)
-    #res_img.save(out_pth)
-    user_inp = 1
-    y1, x1, y2, x2 = param['rois'][user_inp]
-    img_det = input_img[y1:y2, x1:x2, :]
-    img_det_save = Image.fromarray(img_det)
-    img_det_save.save(out_pth_det)
+    res_dict = {}
+    print(object_labels)
+    for label in object_labels.keys():
+        res_cls = []
+        for j in object_labels[label]:
+            user_inp = j
+            y1, x1, y2, x2 = param['rois'][user_inp]
+            img_det = input_img[y1:y2, x1:x2, :]
+            img_det_save = Image.fromarray(img_det)
+            img_det_save.save(out_pth_det + '_' + str(label) + '_det_' + str(user_inp) + '.jpg')
 
-    img_mask = masks_objects[user_inp]
-    img_mask = img_mask[x1:x2, y1:y2]
-    for i in range(img_mask.shape[0]):
-        for j in range(img_mask.shape[1]):
-            if img_mask[i][j] == False:
-                img_det[j][i] = [255.0, 255.0, 255.0]
-    img_det = Image.fromarray(img_det)
-    img_det.save(out_pth_mask)
-    return
+            img_mask = masks_objects[user_inp]
+            img_mask = img_mask[x1:x2, y1:y2]
+            for i in range(img_mask.shape[0]):
+                for j in range(img_mask.shape[1]):
+                    if img_mask[i][j] == False:
+                        img_det[j][i] = [255.0, 255.0, 255.0]
+            img_det = Image.fromarray(img_det)
+            img_det.save(out_pth_det + '_' + str(label) + '_mask_' + str(user_inp) + '.jpg')
+            tmp_dict = {
+                "ID": user_inp,
+                "det_img_path": out_pth_det + '_' + str(label) + '_det_' + str(user_inp) + '.jpg',
+                "mask_img_path": out_pth_det + '_' + str(label) + '_mask_' + str(user_inp) + '_mask.jpg'
+            }
+            res_cls.append(tmp_dict)
+        res_dict[label] = res_cls
+    json_object = json.dumps(res_dict, indent=4)
+    
+    with open("result.json", "w") as outfile:
+        outfile.write(json_object)
+
+    return res_dict
 
 if __name__ == '__main__':
     print("Infer Code:")
-    predict('./Mask_RCNN_clone/images/3627527276_6fe8cd9bfe_z.jpg')
+    res = predict('./Mask_RCNN_clone/images/2516944023_d00345997d_z.jpg')
