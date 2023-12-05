@@ -1,0 +1,66 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  
+  .file-upload-container {
+    margin-top: 0%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .custom-file-upload {
+    display: inline-block;
+    margin-top: 50px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .input-file {
+    margin-top: 10px;
+    margin-left: 150px;
+  }
+  
+  .input-image{
+    margin-top: 10px;
+    margin-left: -30%;
+  }
+
+  .task-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -30px;
+    /* border: 2px solid #121313e4; */
+  }
+  
+  .dropdown-container {
+    padding: 10px;
+  }
+
+  .input-image-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .task-info-box{
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 16px;
+  }
