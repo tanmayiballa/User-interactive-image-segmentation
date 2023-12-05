@@ -1,17 +1,26 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import TitleBar from './titlebar';
+import './style.css'; 
+
 
 import sample_out_det from "./images/sample_out_det.jpg";
 import sample_out_mask from "./images/sample_out_mask.jpg";
 
 
 function App() {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState();
   const [result, setResult] = useState(null);
-
+  const [task, setSelectedOption] = useState(null);
+  
   const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+    console.log(event.target.files);
+    setFile(URL.createObjectURL(event.target.files[0]));
   };
+  const handleDropdownChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
 
   const handleUpload = async () => {
     try {
@@ -31,11 +40,65 @@ function App() {
     }
   };
 
+  const processImage = async () => {
+    try {
+      console.log("Hi")
+      
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
+
+
+
   return (
     <div>
-      <h1>Image Processing App</h1>
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload and process</button>
+      <div>
+      <TitleBar title="Image Segmentation" />
+      <div className='file-upload-container'>
+        <label htmlFor='fileInput' className='custom-file-upload'>
+          Upload Your Input Image
+        </label>
+        <input id = "inp_img" type="file" onChange={handleFileChange} className='input-file'/>
+        {
+          file && (
+            <div className='input-image-container'>
+              <div>
+                <img src={file} alt="input_image" className='input-image' />
+              </div>
+
+              <div className="task-box">
+                <div className="task-info-box">
+                  <p>Choose the required operation:</p>
+                </div>
+
+                <div className="dropdown-container">
+                  <label htmlFor="dropdown"></label>
+                  <select id="dropdown" value={task} onChange={handleDropdownChange}>
+                    <option value="Option 1">Detect all objects</option>
+                    <option value="Option 2">Option 2</option>
+                    <option value="Option 3">Option 3</option>
+                  </select>
+                </div>
+
+                {task && <button onClick={processImage}>Process</button>} 
+                
+
+              </div>
+
+            </div>
+          )
+        }
+
+
+      
+        
+        </div>
+      
+
+      
+    </div>
+
       {result && (
         <div>
           <img src={sample_out_det} alt="Cropped Object" />
