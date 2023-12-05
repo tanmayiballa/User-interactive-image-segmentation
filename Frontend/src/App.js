@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import TitleBar from './titlebar';
 import './style.css'; 
+import Popup from 'reactjs-popup';
+// import 'reactjs-popup/dist/index.css';
 
 
 import sample_out_det from "./images/sample_out_det.jpg";
@@ -48,6 +50,49 @@ function App() {
       console.error('Error uploading file:', error);
     }
   };
+  const detectedImages = async () => {
+    try {
+      console.log("Hi")
+      
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
+  
+  const [checked, setChecked] = useState([]);
+  const checkList = ["Car", "Person", "Zebra", "Lights"];
+
+
+  // Add/Remove checked item from list
+  const handleCheck = (event) => {
+    var updatedList = [...checked];
+    if (event.target.checked) {
+      updatedList = [...checked, event.target.value];
+    } else {
+      updatedList.splice(checked.indexOf(event.target.value), 1);
+    }
+    setChecked(updatedList);
+  };
+
+  // Generate string of checked items
+  const checkedItems = checked.length
+    ? checked.reduce((total, item) => {
+        return total + ", " + item;
+      })
+    : "";
+
+  // Return classes based on whether item is checked
+  var isChecked = (item) =>
+    checked.includes(item) ? "checked-item" : "not-checked-item";
+
+  const [dialog, setDialog] = useState(false);
+  const [imageSrc, setImageSrc] = useState(
+    "src/images/sample_out_det.jpg"
+  );
+  const toggleDialog = () => {
+    setDialog(!dialog);
+  };
+ 
 
 
 
@@ -75,36 +120,115 @@ function App() {
                 <div className="dropdown-container">
                   <label htmlFor="dropdown"></label>
                   <select id="dropdown" value={task} onChange={handleDropdownChange}>
+                    <option value="">Select an option</option>
                     <option value="Option 1">Detect all objects</option>
                     <option value="Option 2">Option 2</option>
                     <option value="Option 3">Option 3</option>
                   </select>
                 </div>
 
-                {task && <button onClick={processImage}>Process</button>} 
+                {/* {task && <button onClick={processImage}>Process</button>} 
+                <div>
+                  <Popup trigger=
+                    {<button onClick={processImage}>Process</button>} 
+                    modal nested>
+                    {
+                      close => (
+                          <div className='image-popup'>
+                              <div className='content'>
+                              <img
+                                src='/Users/harikakanakam/Documents/IU/Edu/Fall23/ECC/Project/User-Interactive-Image-Classification/Backend/Mask_RCNN/25691390_f9944f61b5_z.jpg' // Replace with the actual path to your image
+                                // alt='Popup Image'
+                                // style={{ maxWidth: '100%', maxHeight: '100%' }}
+                              />
+                              </div>
+                              <div>
+                                  <button onClick=
+                                      {() => close()}>
+                                          Close
+                                  </button>
+                              </div>
+                          </div>
+                      )
+                    }
+                  </Popup>
+                </div> */}
                 
+                {task && (
+                <div>
+                  <button onClick={processImage}>Process</button>
+                  <div className="checkList">
+                    <div className="title">Identified Labels</div>
+                    <div className="list-container">
+                      {checkList.map((item, index) => (
+                        <div key={index}>
+                          <input value={item} type="checkbox" onChange={handleCheck} />
+                          <span className={isChecked(item)}>{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    {`Selected Labels are: ${checkedItems}`}
+                  </div>
+                  {/* <button onClick={detectedImages}>Show Detected Images</button> */}
+                  {/* <button onClick={detectedImages}>Show Detected Images</button> */}
+                  {/* <button className="popup-button" onClick={toggleDialog}>Show Popup Image</button>
+                    {dialog && (
+                      <div className="dialog">
+                        <div className="dialog-content">
+                          <button className="close-icon" onClick={toggleDialog}>&#10005;</button>
+                          <img className="popup-image" src={imageSrc} alt="Detected" />
+                        </div>
+                      </div>
+                    )} */}
+
+                <div>
+                  <Popup trigger=
+                    {<button onClick={detectedImages}>Show Detected Images</button>} 
+                    modal nested>
+                    {
+                      close => (
+                          <div className='image-popup'>
+                              <div className='content'>
+                              <img
+                                src={sample_out_det}
+                                alt='Detected Image'
+                                style={{ maxWidth: '48%', maxHeight: '2%' }}
+                              />
+                              <img
+                                src={sample_out_mask}
+                                alt='Masked Image'
+                                style={{ maxWidth: '48%', maxHeight: '2%' }}
+                              />
+                              </div>
+                              <div>
+                                  <button onClick={() => close()}>Close</button>
+                              </div>
+                          </div>
+                      )
+                    }
+                  </Popup>
+                </div>
+
+
+                </div>)}
 
               </div>
 
             </div>
           )
         }
-
-
-      
-        
         </div>
-      
-
-      
     </div>
 
+      {/* <button onClick={handleUpload}>Upload and process</button>
       {result && (
         <div>
           <img src={sample_out_det} alt="Cropped Object" />
           <img src={sample_out_mask} alt="Masked Object" />
         </div>
-      )}
+      )} */}
       
     </div>
   );
