@@ -67,9 +67,9 @@ import sample_out_det from "./images/sample_out_det.jpg";
 import sample_out_mask from "./images/sample_out_mask.jpg";
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8000/images/',
+  baseURL: 'http://ec2-3-21-134-234.us-east-2.compute.amazonaws.com:5678/images/',
 });
-const baseimgURL = 'http://localhost:8000/images/';
+const baseimgURL = 'http://ec2-3-21-134-234.us-east-2.compute.amazonaws.com:5678/images/';
 
 function App() {
   const backgroundColor = '#adbfec';
@@ -108,7 +108,7 @@ function App() {
   
   const downloadFiles = async () => {
     try{
-        const response = await axios.post('http://localhost:8000/ecc/download-files/', downloadData, {
+        const response = await axios.post('http://ec2-3-21-134-234.us-east-2.compute.amazonaws.com:5678/ecc/download-files/', downloadData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             'responseType': 'blob',
@@ -223,7 +223,7 @@ function App() {
         const formData = new FormData();
         formData.append('file', file);
 
-        const response = await axios.post('http://localhost:8000/ecc/uploadfile/', formData, {
+        const response = await axios.post('http://ec2-3-21-134-234.us-east-2.compute.amazonaws.com:5678/ecc/uploadfile/', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -309,9 +309,7 @@ function App() {
                   <label htmlFor="dropdown"></label>
                   <select id="dropdown" value={task} onChange={handleDropdownChange}>
                     <option value="">Select an option</option>
-                    <option value="Option 1">Detect all objects</option>
-                    <option value="Option 2">Option 2</option>
-                    <option value="Option 3">Option 3</option>
+                    <option value="Option 1">Detect Objects and Segment</option>
                   </select>
                 </div>
                 {task && (
