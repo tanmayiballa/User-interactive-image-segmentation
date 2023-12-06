@@ -291,7 +291,7 @@ function App() {
                       </div>
                       <div>
                         
-                          <button onClick={handleButtonClick}>Show Detected Images</button>
+                          <button onClick={handleButtonClick}>Detect Images</button>
                           {/* {showImages &&  <div >
                                     <div className='image-popup'>
                                     {showImages && <ImageDisplay imageList={merged_checks_url} />}
@@ -304,7 +304,7 @@ function App() {
                           {
                             close => (
                                 <div >
-                                    <div className='images-popup'>
+                                    <div className='images_popup'>
                                     {showImages && <ImageDisplay imageList={merged_checks_url} />}
                                     </div>
                                     <div>
