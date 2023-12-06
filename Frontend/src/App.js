@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component   } from 'react';
 import axios from 'axios';
 import TitleBar from './titlebar';
 import './style.css'; 
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import xtype from 'xtypejs'
 
 
 import sample_out_det from "./images/sample_out_det.jpg";
@@ -16,7 +17,10 @@ function App() {
   const [result, setResult] = useState(null);
   const [task, setSelectedOption] = useState(null);
   const [isCheckListVisible, setCheckListVisible] = useState(false);
-  
+  const [checked, setChecked] = useState([]);
+  const [checkList, setCheckList] = useState([]);
+  const checkList1 = ["Car", "Person", "Zebra", "Lights"];
+
   const handleFileChange = (event) => {
     console.log(event.target.files);
     setFile(URL.createObjectURL(event.target.files[0]));
@@ -47,7 +51,16 @@ function App() {
   const processImage = async () => {
     try {
       console.log("Process Image")
-      
+      // setCheckList(["Car", "Person", "Zebra", "Lights"]);
+      const response = await axios.post('http://localhost:5006/ecc/get_labels', {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+      const resp = await JSON.parse(JSON.stringify(response));
+      console.log('Data from backend :', resp.data);
+      setCheckList(Object.values(resp.data.data.labels))
+
     } catch (error) {
       console.error('Error uploading file:', error);
     }
@@ -57,64 +70,31 @@ function App() {
   const detectedImages = async () => {
     try {
       console.log("Detected Images")
-      
-    } catch (error) {
-      console.error('Error uploading file:', error);
-    }
-  };
-  
-  const [checked, setChecked] = useState([]);
-  const [checkList, setCheckList] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await  axios.post('http://localhost:5001/ecc/get_labels', {
+      const response = await axios.post('http://localhost:5006/ecc/get_image', {}, {
           headers: {
             'Content-Type': 'application/json',
           }
         });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
+        console.log(response.data.data)
+        var blobURL = URL.createObjectURL(response.data.data);
+        var image = document.getElementById("detImage");
+        image.onload = function(){
+            URL.revokeObjectURL(this.src); // release the blob URL once the image is loaded
         }
+        image.src = blobURL;
 
-        const data = await response.json();
-        console.log('Data from backend:', data);
-        setCheckList(data.data);
-      } catch (error) {
-        console.error('Error fetching data:', error.message);
-      }
-    };
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
 
-    fetchData();
-  }, []);
   const handleCheck = (event) => {
     const updatedList = event.target.checked
       ? [...checked, event.target.value]
       : checked.filter((item) => item !== event.target.value);
-
     setChecked(updatedList);
   };
   const checkedItems = checked.length ? checked.join(', ') : '';
-
-  // // Add/Remove checked item from list
-  // const handleCheck = (event) => {
-  //   var updatedList = [...checked];
-  //   if (event.target.checked) {
-  //     updatedList = [...checked, event.target.value];
-  //   } else {
-  //     updatedList.splice(checked.indexOf(event.target.value), 1);
-  //   }
-  //   setChecked(updatedList);
-  // };
-
-  // Generate string of checked items
-  // const checkedItems = checked.length
-  //   ? checked.reduce((total, item) => {
-  //       return total + ", " + item;
-  //     })
-  //   : "";
 
   // Return classes based on whether item is checked
   const isChecked = (item) => (checked.includes(item) ? 'checked-item' : 'not-checked-item');
@@ -176,26 +156,13 @@ function App() {
                       </div>
                       <div>
                         <Popup trigger=
-                          {<button onClick={detectedImages}>Show Detected Images</button>} 
+                          {<button onClick={detectedImages}>Show Detected Images</button>}
                           modal nested>
                           {
                             close => (
                                 <div >
                                     <div className='image-popup'>
-                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
-                                    <img
-                                      src={sample_out_mask} 
-                                      className='images_popup'
-                                      alt='Masked Image'
-                                    />
-                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
-                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
-                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
-                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
-                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
-                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
-                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
-                                    <img src={sample_out_det} className='images_popup' alt='Detected Image' />
+                                    <img id="myImage" src="" />
                                     </div>
                                     <div>
                                         <button className='button_popup'
@@ -232,103 +199,3 @@ function App() {
 
 export default App;
 
-
-// import React, { useState } from 'react';
-
-// function App() {
-//   const [file, setFile] = useState(null);
-//   const [outputPath, setOutputPath] = useState(null);
-
-//   const handleFileChange = (event) => {
-//     const selectedFile = event.target.files[0];
-//     setFile(selectedFile);
-//   };
-
-//   const handleFileUpload = async () => {
-//     const formData = new FormData();
-//     formData.append('file', file);
-
-//     try {
-//       const response = await fetch('http://localhost:8000/uploadfile/', {
-//         method: 'POST',
-//         body: formData,
-//       }); 
-
-//       const result = await response.json();
-//       console.log(result.output);
-//       setOutputPath(result.output);
-//     } catch (error) {
-//       console.error('Error uploading file:', error);
-//     }
-//   };
-
-//   const handleDownload = async () => {
-//     // Trigger download for the processed file
-//     window.open(`http://localhost:8000/download/sample_out_det.jpg`, '_blank');
-//   };
-
-//   return (
-//     <div>
-//       <input type="file" onChange={handleFileChange} />
-//       <button onClick={handleFileUpload}>Upload and Process</button>
-
-//       {outputPath && (
-//         <div>
-//           <p>Processed Image:</p>
-//           <img src={`http://localhost:8000${outputPath}`} alt="Processed" />
-//           <button onClick={handleDownload}>Download Processed Image</button>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default App;
-
-
-// // import React, { useState } from 'react';
-// // import axios from 'axios';
-
-// // function App() {
-// //   const [file, setFile] = useState(null);
-// //   const [outputPath, setOutputPath] = useState(null);
-
-// //   const handleFileChange = (event) => {
-// //     setFile(event.target.files[0]);
-// //   };
-
-// //   const handleFileUpload = async () => {
-// //     const formData = new FormData();
-// //     formData.append('file', file);
-
-// //     try {
-// //       const response = await axios.post('http://localhost:8000/uploadfile/', formData, {
-// //         headers: {
-// //           'Content-Type': 'multipart/form-data',
-// //         },
-// //       });
-
-// //       const { output } = response.data;
-// //       setOutputPath(output);
-// //       console.log()
-// //     } catch (error) {
-// //       console.error('Error uploading file:', error);
-// //     }
-// //   };
-
-// //   return (
-// //     <div>
-// //       <input type="file" onChange={handleFileChange} />
-// //       <button onClick={handleFileUpload}>Upload and Process</button>
-
-// //       {outputPath && (
-// //         <div>
-// //           <p>Output Image:</p>
-// //           <img src={`http://localhost:8000${outputPath}`} alt="Output" />
-// //         </div>
-// //       )}
-// //     </div>
-// //   );
-// // }
-
-// // export default App;
