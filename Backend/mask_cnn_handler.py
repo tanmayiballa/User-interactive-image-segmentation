@@ -105,14 +105,17 @@ class Handler:
 
             res_dict = {}
             log.info(object_labels)
+            det_imgs = {}
+            masked_imgs = {}
             for label in object_labels.keys():
-                res_cls = []
+                res_cls_det = []
+                res_cls_mask = []
                 for j in object_labels[label]:
                     user_inp = j
                     y1, x1, y2, x2 = param['rois'][user_inp]
                     img_det = input_img[y1:y2, x1:x2, :]
                     img_det_save = Image.fromarray(img_det)
-                    img_det_save.save(img_out_path + '_' + str(label) + '_det_' + str(user_inp) + '.jpg')
+                    img_det_save.save(img_out_path  + str(label) + '_det_' + str(user_inp) + '.jpg')
 
                     img_mask = masks_objects[user_inp]
                     img_mask = img_mask[x1:x2, y1:y2]
@@ -121,14 +124,19 @@ class Handler:
                             if img_mask[i][j] == False:
                                 img_det[j][i] = [255.0, 255.0, 255.0]
                     img_det = Image.fromarray(img_det)
-                    img_det.save(img_out_path + '_' + str(label) + '_mask_' + str(user_inp) + '.jpg')
-                    tmp_dict = {
-                        "ID": user_inp,
-                        "det_img_path": img_out_path + '_' + str(label) + '_det_' + str(user_inp) + '.jpg',
-                        "mask_img_path": img_out_path + '_' + str(label) + '_mask_' + str(user_inp) + '_mask.jpg'
-                    }
-                    res_cls.append(tmp_dict)
-                res_dict[label] = res_cls
+                    img_det.save(img_out_path  + str(label) + '_mask_' + str(user_inp) + '.jpg')
+                    # tmp_dict_1 = {
+                    #     "ID": user_inp,
+                    #     "det_img_path": str(label) + '_det_' + str(user_inp) + '.jpg',
+                    #     "mask_img_path": str(label) + '_mask_' + str(user_inp) + '_mask.jpg'
+                    # }
+                    res_cls_det.append(str(label) + '_det_' + str(user_inp) + '.jpg')
+                    res_cls_mask.append(str(label) + '_mask_' + str(user_inp) + '_mask.jpg')
+                det_imgs[label] = res_cls_det
+                masked_imgs[label] = res_cls_mask
+            res_dict["det_imgs_path"] = det_imgs
+            res_dict["mask_imgs_path"] = masked_imgs
+            res_dict["labels"] = list(object_labels.keys())
             json_object = json.dumps(res_dict, indent=4)
             
             with open("result.json", "w") as outfile:

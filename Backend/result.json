@@ -1,70 +1,37 @@
 {
-    "person": [
-        {
-            "ID": 0,
-            "det_img_path": "output_images/_person_det_0.jpg",
-            "mask_img_path": "output_images/_person_mask_0_mask.jpg"
-        },
-        {
-            "ID": 1,
-            "det_img_path": "output_images/_person_det_1.jpg",
-            "mask_img_path": "output_images/_person_mask_1_mask.jpg"
-        },
-        {
-            "ID": 2,
-            "det_img_path": "output_images/_person_det_2.jpg",
-            "mask_img_path": "output_images/_person_mask_2_mask.jpg"
-        },
-        {
-            "ID": 3,
-            "det_img_path": "output_images/_person_det_3.jpg",
-            "mask_img_path": "output_images/_person_mask_3_mask.jpg"
-        },
-        {
-            "ID": 4,
-            "det_img_path": "output_images/_person_det_4.jpg",
-            "mask_img_path": "output_images/_person_mask_4_mask.jpg"
-        },
-        {
-            "ID": 6,
-            "det_img_path": "output_images/_person_det_6.jpg",
-            "mask_img_path": "output_images/_person_mask_6_mask.jpg"
-        },
-        {
-            "ID": 7,
-            "det_img_path": "output_images/_person_det_7.jpg",
-            "mask_img_path": "output_images/_person_mask_7_mask.jpg"
-        },
-        {
-            "ID": 8,
-            "det_img_path": "output_images/_person_det_8.jpg",
-            "mask_img_path": "output_images/_person_mask_8_mask.jpg"
-        }
-    ],
-    "fire hydrant": [
-        {
-            "ID": 5,
-            "det_img_path": "output_images/_fire hydrant_det_5.jpg",
-            "mask_img_path": "output_images/_fire hydrant_mask_5_mask.jpg"
-        }
-    ],
-    "car": [
-        {
-            "ID": 9,
-            "det_img_path": "output_images/_car_det_9.jpg",
-            "mask_img_path": "output_images/_car_mask_9_mask.jpg"
-        },
-        {
-            "ID": 10,
-            "det_img_path": "output_images/_car_det_10.jpg",
-            "mask_img_path": "output_images/_car_mask_10_mask.jpg"
-        }
-    ],
-    "handbag": [
-        {
-            "ID": 11,
-            "det_img_path": "output_images/_handbag_det_11.jpg",
-            "mask_img_path": "output_images/_handbag_mask_11_mask.jpg"
-        }
+    "det_imgs_path": {
+        "dog": [
+            "dog_det_0.jpg",
+            "dog_det_1.jpg",
+            "dog_det_2.jpg",
+            "dog_det_4.jpg"
+        ],
+        "person": [
+            "person_det_3.jpg",
+            "person_det_5.jpg"
+        ],
+        "bench": [
+            "bench_det_6.jpg"
+        ]
+    },
+    "mask_imgs_path": {
+        "dog": [
+            "dog_mask_0_mask.jpg",
+            "dog_mask_1_mask.jpg",
+            "dog_mask_2_mask.jpg",
+            "dog_mask_4_mask.jpg"
+        ],
+        "person": [
+            "person_mask_3_mask.jpg",
+            "person_mask_5_mask.jpg"
+        ],
+        "bench": [
+            "bench_mask_6_mask.jpg"
+        ]
+    },
+    "labels": [
+        "dog",
+        "person",
+        "bench"
     ]
 }
