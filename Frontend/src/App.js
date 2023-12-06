@@ -72,7 +72,7 @@ const instance = axios.create({
 const baseimgURL = 'http://localhost:8000/images/';
 
 function App() {
-
+  const backgroundColor = '#adbfec';
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState(null);
   const [result, setResult] = useState(null);
@@ -87,12 +87,21 @@ function App() {
   const [DetImgsValues,setDetImgsValues] = useState(null);
   const [merged_checks, setMerged_checks] = useState([]);
   const [merged_checks_url, setMerged_checks_url] = useState([]);
+  const [merged_checks1, setMerged_checks1] = useState([]);
+  const [merged_checks_url1, setMerged_checks_url1] = useState([]);
 
   const imageList = [
     'http://localhost:8000/images/sample.jpg',
     'http://localhost:8000/images/sample.jpg',
     'http://localhost:8000/images/sample.jpg',
   ];
+  const styles = {
+    backgroundColor: backgroundColor,
+    minHeight: '100vh',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  };
 
 
   const handleFileChange = (event) => {
@@ -108,7 +117,7 @@ function App() {
     return (
       <div>
         {imageList.map((imageUrl, index) => (
-          <img key={index} src={imageUrl} className = 'images-popup' alt={`Image ${index}`} />
+          <img key={index} src={imageUrl} className = 'img_popup' alt={`Image ${index}`} />
         ))}
       </div>
     );
@@ -125,15 +134,20 @@ function App() {
     const validIndices = checked.filter((index) => index in ResponseData.det_imgs_path);
     const merged_checks = validIndices.flatMap((index) => ResponseData.det_imgs_path[index]);
     const merged_checks_url = merged_checks.flatMap((index) => baseimgURL + index)
+    const validIndices1 = checked.filter((index) => index in ResponseData.mask_imgs_path);
+    const merged_checks1 = validIndices.flatMap((index) => ResponseData.mask_imgs_path[index]);
+    const merged_checks_url1 = merged_checks1.flatMap((index) => baseimgURL + index)
     console.log(validIndices)
     console.log(checked)
     // const merged_checks = checked.flatMap((index) => ResponseData.det_imgs_path[index]);
     console.log(merged_checks_url);
+    console.log(merged_checks_url1)
     setShowImages(true);
     console.log(xtype(merged_checks_url))
     console.log(xtype(imageList))
     console.log(showImages)
     setMerged_checks_url(merged_checks_url)
+    setMerged_checks_url1(merged_checks_url1)
   };
 
   const getDetImgsValuesForLabels = (labels) => {
@@ -243,11 +257,11 @@ function App() {
      
 
   return (
-    <div>
-      <div>
-      <TitleBar title="Image Segmentation" />
+    <div style={styles}>
+      <div className='titleBar-style'>
+      <TitleBar title="Image Classification & Segmentation"/>
       <div className='file-upload-container'>
-        <label htmlFor='fileInput' className='custom-file-upload'>
+        <label htmlFor='fileInput' className='custom-file-upload' style={{color:'black', fontStyle:'bold'}}>
           Upload Your Input Image
         </label>
         <input id = "inp_img" type="file" onChange={handleFileChange} className='input-file'/>
@@ -274,42 +288,39 @@ function App() {
                 </div>
                 {task && (
                 <div>
-                  <button onClick={processImage}>Process</button>
+                  <button onClick={processImage} style={{color:'black'}}>Process</button>  </div>)}
+               {task && (
+                <div>
                   {isCheckListVisible && (
                     <div>
-                      <h3>Identified Labels</h3>
+                      <h3 style={{color:'black', display:'fixed'}}>Identified Labels</h3>  </div>)}
+                      { isCheckListVisible && ( <div>
                       <div className="list-container">
                         {checkList.map((item, index) => (
-                          <div key={index}>
+                          <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px', color:'black' }}>
                             <input value={item} type="checkbox" onChange={handleCheck} />
                             <span className={isChecked(item)}>{item}</span>
                           </div>
                         ))}
-                      </div>
-                      <div>
+                      </div> </div>)}
+                    { isCheckListVisible && ( <div>
+                      {/* <div>
                         {`Selected Labels are: ${checkedItems}`}
-                      </div>
+                      </div> */}
                       <div>
-                        
-                          <button onClick={handleButtonClick}>Detect Images</button>
-                          {/* {showImages &&  <div >
-                                    <div className='image-popup'>
-                                    {showImages && <ImageDisplay imageList={merged_checks_url} />}
-                                    </div>
-                                    
-                                </div>} */}
-                          <Popup trigger=
-                          {<button>Show PopUp Images</button>}
+                          <button onClick={handleButtonClick} style={{margin: 10, alignContent:'center'}}>Detect Images</button>
+                          <Popup open={showImages} className = 'popup-content'
                           modal nested>
                           {
                             close => (
-                                <div >
+                                <div className='popup-content'>
                                     <div className='images_popup'>
                                     {showImages && <ImageDisplay imageList={merged_checks_url} />}
+                                    {showImages && <ImageDisplay imageList={merged_checks_url1} />}
                                     </div>
                                     <div>
                                         <button className='button_popup'
-                                        onClick={() => close() }>Close</button>
+                                        onClick={() => setShowImages(false)}>Close</button>
                                     </div>
                                 </div>
                             )
