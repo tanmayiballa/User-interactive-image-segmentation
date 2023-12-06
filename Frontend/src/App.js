@@ -103,6 +103,34 @@ function App() {
     justifyContent: 'center',
   };
 
+  const downloadData = new FormData();
+  downloadData.append('file_names', merged_checks_url);
+  
+  const downloadFiles = async () => {
+    try{
+        const response = await axios.post('http://localhost:8000/ecc/download-files/', downloadData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'responseType': 'blob',
+          },
+        });
+        const blob = new Blob([response.data], { type: response.headers['content-type'] });
+
+        // Create a temporary URL for the blob
+        const url = window.URL.createObjectURL(blob);
+
+        // Create a link element and trigger a download
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Detected Images.zip';
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+      } catch (error){
+      console.error('Error downloading file:', error)
+    }
+  }
+
 
   const handleFileChange = (event) => {
     console.log(event.target.files[0]);
@@ -319,9 +347,20 @@ function App() {
                                     {showImages && <ImageDisplay imageList={merged_checks_url1} />}
                                     </div>
                                     <div>
+                                    <div className='buttons_display'>
+                                      <button className='download_images' 
+                                      onClick={downloadFiles}>Download Files</button>
+                                    </div>
+                                    <div>
                                         <button className='button_popup'
                                         onClick={() => setShowImages(false)}>Close</button>
                                     </div>
+                                    </div>
+
+                                    {/* <div>
+                                        <button className='button_popup'
+                                        onClick={() => setShowImages(false)}>Close</button>
+                                    </div> */}
                                 </div>
                             )
                           }
