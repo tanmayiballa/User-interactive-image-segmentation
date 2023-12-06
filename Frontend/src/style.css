@@ -91,11 +91,24 @@
    padding-right: 50px;
   }
   
+  .buttons_display{
+    padding-top: 20px;
+    background-color: #99abd9;
+    width: 747px;
+    height: 80px;
+    margin-left: -190px;
+    margin-bottom:-20px ;
+  }
   
   .button_popup{
     position: absolute;
     bottom: 10px;
     right: 10px;
+  }
+  .download_images{
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
   }
   
   .img_popup{

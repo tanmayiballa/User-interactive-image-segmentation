@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 
 from mask_cnn_service import router
@@ -25,3 +26,7 @@ app.mount("/images", StaticFiles(directory="output_images/"), name="images")
 def root():
     return "Welcome to User Interactive Image Classification and Segmentation application"
 
+
+if __name__ == "__main__":
+    uvicorn.run(app, host = "0:0:0:0", port = 5678)
+    
