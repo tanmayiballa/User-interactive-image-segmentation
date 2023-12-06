@@ -131,7 +131,7 @@ class Handler:
                     #     "mask_img_path": str(label) + '_mask_' + str(user_inp) + '_mask.jpg'
                     # }
                     res_cls_det.append(str(label) + '_det_' + str(user_inp) + '.jpg')
-                    res_cls_mask.append(str(label) + '_mask_' + str(user_inp) + '_mask.jpg')
+                    res_cls_mask.append(str(label) + '_mask_' + str(user_inp) + '.jpg')
                 det_imgs[label] = res_cls_det
                 masked_imgs[label] = res_cls_mask
             res_dict["det_imgs_path"] = det_imgs
